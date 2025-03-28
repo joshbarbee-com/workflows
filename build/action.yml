@@ -1,0 +1,38 @@
+name: Deploy Infrastructure to Dev
+on:
+  push:
+    branches:
+      - main
+env:
+  AWS_REGION : "us-east-2"
+  ROLE : "arn:aws:iam::902448871458:role/provisioner"
+permissions:
+  id-token: write
+  contents: read
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git clone the repository
+        uses: actions/checkout@v4
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502
+        with:
+          role-to-assume: ${{ env.ROLE }}
+          role-session-name: terraform-cicd-session
+          aws-region: ${{ env.AWS_REGION }}
+      - name: Initialize Terraform
+        run: terraform init
+        env:
+          AWS_REGION: ${{ env.AWS_REGION }}
+      - name: Terraform Plan
+        run: terraform plan
+        env:
+          AWS_REGION: ${{ env.AWS_REGION }}
+          TF_VAR_ENVIRONMENT: dev
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
+        env:
+          AWS_REGION: ${{ env.AWS_REGION }}
