@@ -2,7 +2,7 @@ name: Deploy Infrastructure to Dev
 on: workflow_call
 env:
   AWS_REGION : "us-east-2"
-  ROLE : "arn:aws:iam::902448871458:role/provisioner"
+  ROLE : "arn:aws:iam::902448871458:role/github-cicd-provisioner"
 permissions:
   id-token: write
   contents: read
