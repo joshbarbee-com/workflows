@@ -21,11 +21,11 @@ jobs:
           role-session-name: terraform-cicd-session
           aws-region: ${{ env.AWS_REGION }}
       - name: Initialize Terraform
-        run: terraform init
+        run: (cd infra/dev && terraform init)
         env:
           AWS_REGION: ${{ env.AWS_REGION }}
       - name: Terraform Plan
-        run: terraform plan
+        run: (cd infra/dev && terraform plan)
         env:
           AWS_REGION: ${{ env.AWS_REGION }}
           TF_VAR_ENVIRONMENT: dev
