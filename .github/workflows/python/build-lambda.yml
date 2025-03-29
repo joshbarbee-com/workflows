@@ -1,0 +1,21 @@
+name: Build Lambda File as zip
+on: workflow_call
+permissions:
+  contents: read
+jobs:
+  build-lambda:
+    runs-on: ubuntu-latst
+    steps:
+      - name: Git clone the repository
+        uses: actions/checkout@v4
+      - name: Install Python 3.13
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.13
+      - name: Install Pipenv
+        run: pip install pipenv
+      - name: Run Tests
+        run: |
+          pipenv install --dev
+          pipenv run pytest
+
