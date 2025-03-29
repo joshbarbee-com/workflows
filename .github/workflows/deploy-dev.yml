@@ -21,15 +21,18 @@ jobs:
           role-session-name: terraform-cicd-session
           aws-region: ${{ env.AWS_REGION }}
       - name: Initialize Terraform
-        run: (cd infra/dev && terraform init)
+        run: terraform init
+        working-directory: infra/dev
         env:
           AWS_REGION: ${{ env.AWS_REGION }}
       - name: Terraform Plan
-        run: (cd infra/dev && terraform plan)
+        run: terraform plan
+        working-directory: infra/dev
         env:
           AWS_REGION: ${{ env.AWS_REGION }}
           TF_VAR_ENVIRONMENT: dev
       - name: Terraform Apply
         run: terraform apply -auto-approve
+        working-directory: infra/dev
         env:
           AWS_REGION: ${{ env.AWS_REGION }}
